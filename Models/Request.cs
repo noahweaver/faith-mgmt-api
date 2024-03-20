@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FaithMgmtAPI.Models
 {
-    public class Request(int id, string prayerRequest, int? memberId = null, string? name = null, DateTime? createdAt = null)
+    public class Request
     {
         [Key]
-        public int Id { get; } = id;
+        public int Id { get; private set; }
         
-        public int? MemberId { get; set; } = memberId;
+        public int? MemberId { get; set; }
 
-        public string? Name { get; set; } = name;
-        public string PrayerRequest { get; set; } = prayerRequest;
+        public string? Name { get; set; }
+        public string PrayerRequest { get; set; } = null!;
 
-        public DateTime? CreatedAt { get; } = createdAt;
+        public DateTime? CreatedAt { get; private set; }
 
     }
 }

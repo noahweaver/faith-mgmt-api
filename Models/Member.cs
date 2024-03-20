@@ -4,13 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FaithMgmtAPI.Models
 {
-    public class Member(string name)
+    public class Member
     {
         [Key]
-        public int Id { get; }
+        public int Id { get; private set; }
 
-        public string Name { get; set; } = name;
-        public DateTime DateAdded { get; }
+        public string Name { get; set; } = null!;
+        public DateTime DateAdded { get; private set; }
         public List<int>? Requests { get; set; }
     }
+
 }
