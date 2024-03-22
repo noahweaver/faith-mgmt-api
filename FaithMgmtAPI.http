@@ -1,6 +1,14 @@
-@FaithMgmtAPI_HostAddress = http://localhost:5266
+@FaithMgmtAPI_HostAddress = https://localhost:7152
 
 GET {{FaithMgmtAPI_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+GET {{FaithMgmtAPI_HostAddress}}/member/all_members
+
+###
+
+GET {{FaithMgmtAPI_HostAddress}}/member/all-members
 
 ###

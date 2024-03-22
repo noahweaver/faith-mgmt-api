@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using MySqlConnector;
+using FaithMgmtAPI.Models;
+using FaithMgmtAPI.Data;
+using NuGet.Protocol;
 
 
 namespace FaithMgmtAPI.Controllers
@@ -10,36 +13,24 @@ namespace FaithMgmtAPI.Controllers
     [ApiController]
     public class MemberController : ControllerBase
     {
-        private IConfiguration _config;
-        public MemberController(IConfiguration config)
+
+        private readonly FaithMgmtContext _context;
+
+        public MemberController(FaithMgmtContext context)
         {
-            _config = config;
+            _context = context;
         }
 
-        // GET: api/Members
+
+        // GET: api/all-members
         [HttpGet]
-        [Route("all_members")]
-        public JsonResult GetMembers()
+        [Route("all-members")]
+
+        public async Task<ActionResult<List<Member>>> GetAllMembers()
         {
-            string query = "SELECT * FROM `faith-mgmt-db`.members_table";
-            DataTable table = new DataTable();
-
-            string sqlDataSource = _config.GetConnectionString("FaithMgmt");
-            MySqlDataReader myReader;
-
-            using (MySqlConnection mySqlConn = new MySqlConnection(sqlDataSource))
-            {
-                mySqlConn.Open();
-                using (MySqlCommand mySqlCmd = new MySqlCommand(query, mySqlConn))
-                {
-                    myReader = mySqlCmd.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    mySqlConn.Close();
-                }
-            }
-
-            return new JsonResult(table);
+            var members = await _context.Members_Table.ToListAsync();
+            return Ok(members);
         }
+
     }
 }

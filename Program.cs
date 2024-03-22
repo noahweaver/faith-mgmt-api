@@ -1,12 +1,11 @@
 using FaithMgmtAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
-using Pomelo.EntityFrameworkCore.MySql;
-using FaithMgmtAPI.Controllers;
-using FaithMgmtAPI.Models;
 
 // Create a new web application builder with the provided command line arguments
 var builder = WebApplication.CreateBuilder(args);
+
+// ======== CONFIGURATION ========
 
 // Add services to the container
 //builder.Services.AddDbContext<FaithMgmtContext>(options =>
@@ -28,8 +27,19 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore).AddNewtonsoftJson(options =>
         options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
+// Add DB Context and Reference to Connection String
+builder.Services.AddDbContext<FaithMgmtContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("FaithMgmt");
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
+
 // Build the application
 var app = builder.Build();
+
+
+// ======== MIDDLEWARE ========
+
 
 // Enable CORS (Cross-Origin Resource Sharing) with any header, origin, and method
 app.UseCors(c => c.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
@@ -39,8 +49,8 @@ app.UseCors(c => c.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 // If the application is in development mode, use Swagger and SwaggerUI
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 // Use authorization middleware
@@ -49,5 +59,5 @@ app.UseAuthorization();
 // Map controller routes
 app.MapControllers();
 
-// Run the application
+// RUN THE APP
 app.Run();
