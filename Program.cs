@@ -14,12 +14,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 // Add Swagger generator services to the application. This will generate Swagger/OpenAPI documents
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SchemaFilter<SwaggerIgnoreNamespace.SwaggerIgnoreAttribute>();
-});
-
-// Add Swagger generator services to the application. This will generate Swagger/OpenAPI documents
 builder.Services.AddSwaggerGen();
 
 // Configure JSON Serializer
