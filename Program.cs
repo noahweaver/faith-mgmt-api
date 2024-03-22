@@ -7,15 +7,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ======== CONFIGURATION ========
 
-// Add services to the container
-//builder.Services.AddDbContext<FaithMgmtContext>(options =>
-//    options.UseMySql(builder.Configuration.GetConnectionString("FaithMgmt")));
-
 // Add controllers as services to the application
 builder.Services.AddControllers();
 
 // Add API explorer services to the application. This is required for Swagger/OpenAPI generation
 builder.Services.AddEndpointsApiExplorer();
+
+// Add Swagger generator services to the application. This will generate Swagger/OpenAPI documents
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SchemaFilter<SwaggerIgnoreNamespace.SwaggerIgnoreAttribute>();
+});
 
 // Add Swagger generator services to the application. This will generate Swagger/OpenAPI documents
 builder.Services.AddSwaggerGen();
@@ -39,7 +41,7 @@ var app = builder.Build();
 
 
 // ======== MIDDLEWARE ========
-
+// After building the app but before running it, add middleware components to the application's request pipeline
 
 // Enable CORS (Cross-Origin Resource Sharing) with any header, origin, and method
 app.UseCors(c => c.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());

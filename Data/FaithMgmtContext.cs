@@ -32,5 +32,27 @@ namespace FaithMgmtAPI.Data
             // Configure the context to use MySQL and automatically detect the server version.
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
+
+        // This method is called when the model for a derived context has been initialized, but
+        // before the model has been locked down and used to initialize the context. 
+        // The default implementation of this method does nothing, but it can be overridden in a derived class 
+        // such that the model can be further configured before it is locked down.
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Here we are configuring the 'Member' entity
+            modelBuilder.Entity<Member>()
+                // We are specifying a property of the 'Member' entity, which is 'DateAdded'
+                .Property(e => e.DateAdded)
+                // We are setting a default value for the 'DateAdded' property
+                // The 'HasDefaultValueSql' method configures the property to have the given SQL Server 
+                // computed column expression used as the default value for the property 
+                // when a new entity is inserted. Here, 'CURRENT_TIMESTAMP' is used, 
+                // which is a function that returns the current date and time in MySQL.
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            // CONFIGURE REQUEST ENTITY HERE
+        }
+
+
     }
 }
